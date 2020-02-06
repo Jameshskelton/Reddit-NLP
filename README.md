@@ -37,3 +37,11 @@ ________________________________________________________________________________
 ____________________________________________________________________________________
 
 The final resulting modeling came from a decision tree comprised of Random Forest Classifers. Using rank ordering, the most likely meta and then subreddit within the meta was chosen based on the .predict_proba_ method. 
+
+First, the dataframe was dummyized for the 'meta' column. For each meta, a Random Forest Classifier was fit to each dummy meta column as a target using the cleaned, tokenized, and lemmatized text data as input. 
+
+Second, each meta was seperated into its own dataframe. from there, the constituent subreddits were dummyized. For each subreddit, a Random Forest Classifier was fit with the target as the dummy subreddit and its input text being the text data for the entire meta. 
+
+To utilize this multitude of models, a function was created that takes an input test string. The test string is cleaned, tokenized, and lemmatized in the same fashion as the original comment data. It is then run through each meta model using the predict_proba_ method to determine a rank order of the most likely meta the new text would fall into, as if it were a held out part of the original data set. Depending on which meta model it was determined to fall into, it was then run through the constituent subreddit models. This produces another rank ordering of probabilities based on the predict_proba_ method again. This ordered list then selects the subreddit category that the comment had the highest probability of falling in. This subreddit name is then returned by the function along with the probability value. 
+
+In application, this allows for an effective prediction of what sorts of text comments are most likely to fall into the wide range of possible metas and then subreddits within those metas. 
